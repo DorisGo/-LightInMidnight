@@ -1,0 +1,28 @@
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0 20px;
+  border-top: 1.5px solid var(--primary);
+  background: var(--bg);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--primary);
+  opacity: 0.45;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  transition: opacity 0.2s;
+}
+
+.nav-item.active {
+  opacity: 1;
+}
+
+.nav-item:disabled {
+  cursor: default;
+}
