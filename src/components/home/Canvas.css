@@ -1,0 +1,6 @@
+.trace-canvas {
+  flex: 1;
+  position: relative;
+  margin: 16px 0 80px;
+  overflow: hidden;
+}

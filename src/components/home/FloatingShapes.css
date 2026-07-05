@@ -1,0 +1,12 @@
+.trace-symbol {
+  position: absolute;
+  color: var(--primary);
+  pointer-events: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}

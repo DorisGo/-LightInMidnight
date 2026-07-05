@@ -1,0 +1,20 @@
+.now-button {
+  position: absolute;
+  bottom: 88px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px dashed var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  transition: transform 0.15s, background 0.15s;
+  z-index: 10;
+}
+
+.now-button:active {
+  transform: scale(0.94);
+  background: rgba(63, 61, 137, 0.06);
+}

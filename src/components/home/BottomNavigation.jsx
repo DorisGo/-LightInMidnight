@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import './BottomNav.css'
+import './BottomNavigation.css'
 
 function HomeIcon({ active }) {
   return (
@@ -37,7 +37,7 @@ function SettingsIcon() {
   )
 }
 
-export default function BottomNav() {
+export default function BottomNavigation() {
   const navigate = useNavigate()
   const location = useLocation()
   const isHome = location.pathname === '/'
@@ -60,6 +60,7 @@ export default function BottomNav() {
         <SettingsIcon />
         <span>settings</span>
       </button>
+      {/* TODO: wire stats and settings routes */}
     </nav>
   )
 }
