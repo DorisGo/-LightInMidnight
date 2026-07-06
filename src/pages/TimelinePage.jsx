@@ -34,8 +34,13 @@ export default function TimelinePage() {
                 {formatTime(trace.occurredAt)}
               </time>
               <p style={{ marginTop: '4px' }}>
-                {trace.note || `（${trace.mark}）`}
+                {trace.memory}
               </p>
+              {trace.note && (
+                <p style={{ marginTop: '4px', opacity: 0.6, fontSize: '0.85rem' }}>
+                  {trace.note}
+                </p>
+              )}
             </li>
           ))}
         </ul>

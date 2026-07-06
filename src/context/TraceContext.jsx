@@ -10,8 +10,8 @@ export function TraceProvider({ children }) {
     saveTraces(traces)
   }, [traces])
 
-  const addTrace = useCallback((note = '') => {
-    const trace = createTrace(note)
+  const addTrace = useCallback((input) => {
+    const trace = createTrace(input)
     setTraces((prev) => [...prev, trace])
     return trace
   }, [])

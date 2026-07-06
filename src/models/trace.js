@@ -3,11 +3,23 @@
  */
 
 /**
+ * @typedef {'book'|'movie'|'music'|'place'|'other'} TraceCategory
+ */
+
+/**
  * @typedef {Object} CanvasPlacement
  * @property {number} x
  * @property {number} y
  * @property {number} rotation
  * @property {number} scale
+ */
+
+/**
+ * @typedef {Object} TraceInput
+ * @property {string} memory
+ * @property {TraceCategory} category
+ * @property {Date} occurredAt
+ * @property {string} [note]
  */
 
 /**
@@ -17,10 +29,14 @@
  * @property {Date} occurredAt
  * @property {MarkType} mark
  * @property {CanvasPlacement} placement
+ * @property {string} memory
+ * @property {TraceCategory} category
  * @property {string} [note]
  */
 
 export const MARK_TYPES = ['star', 'triangle', 'square', 'diamond', 'target', 'dots', 'squiggle']
+
+export const TRACE_CATEGORIES = ['book', 'movie', 'music', 'place', 'other']
 
 const LEGACY_STORAGE_KEY = 'light-in-midnight-events'
 export const STORAGE_KEY = 'light-in-midnight-traces'
@@ -39,25 +55,22 @@ export function randomPlacement() {
 }
 
 /**
- * @param {string} [note]
+ * @param {TraceInput} input
  * @returns {Trace}
  */
-export function createTrace(note = '') {
-  /** @type {Trace} */
-  const trace = {
+export function createTrace(input) {
+  return {
     id: crypto.randomUUID(),
-    occurredAt: new Date(),
+    occurredAt: input.occurredAt,
     mark: randomMark(),
     placement: randomPlacement(),
+    memory: input.memory,
+    category: input.category,
+    ...(input.note ? { note: input.note } : {}),
   }
-
-  if (note) trace.note = note
-
-  return trace
 }
 
 /**
- * Accepts current and legacy localStorage shapes.
  * @param {unknown} raw
  * @returns {Trace|null}
  */
@@ -78,6 +91,14 @@ export function parseTrace(raw) {
     occurredAt: new Date(/** @type {string|number|Date} */ (occurredAtRaw)),
     mark: /** @type {MarkType} */ (mark),
     placement: /** @type {CanvasPlacement} */ (placement),
+    memory: typeof record.memory === 'string'
+      ? record.memory
+      : typeof record.note === 'string'
+        ? record.note
+        : '',
+    category: TRACE_CATEGORIES.includes(/** @type {string} */ (record.category))
+      ? /** @type {TraceCategory} */ (record.category)
+      : 'other',
   }
 
   if (typeof record.note === 'string' && record.note) {
@@ -96,6 +117,8 @@ export function serializeTrace(trace) {
     occurredAt: trace.occurredAt.toISOString(),
     mark: trace.mark,
     placement: trace.placement,
+    memory: trace.memory,
+    category: trace.category,
     ...(trace.note ? { note: trace.note } : {}),
   }
 }
@@ -136,4 +159,22 @@ export function isToday(trace) {
     date.getMonth() === now.getMonth() &&
     date.getDate() === now.getDate()
   )
+}
+
+/**
+ * @param {Date} date
+ */
+export function toDateInputValue(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+/**
+ * @param {string} value
+ */
+export function fromDateInputValue(value) {
+  const [y, m, d] = value.split('-').map(Number)
+  return new Date(y, m - 1, d, 12, 0, 0)
 }

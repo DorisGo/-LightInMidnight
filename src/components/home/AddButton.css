@@ -11,7 +11,7 @@
   justify-content: center;
   color: var(--primary);
   transition: transform 0.15s, background 0.15s;
-  z-index: 10;
+  z-index: 20;
 }
 
 .now-button:active {
