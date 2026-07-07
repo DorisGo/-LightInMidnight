@@ -1,6 +1,13 @@
 const STROKE = 1.8
 
-export default function TraceSymbol({ type, size = 28 }) {
+/**
+ * @typedef {import('../models/trace').MarkType} MarkType
+ */
+
+/**
+ * @param {{ type: MarkType, size?: number }} props
+ */
+export default function MarkShape({ type, size = 28 }) {
   const props = {
     width: size,
     height: size,

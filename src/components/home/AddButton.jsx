@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useTraces } from '../../context/TraceContext'
 import AddTraceFlow from './AddTraceFlow'
 import './AddButton.css'
 
-export default function AddButton({ onAdd }) {
+export default function AddButton() {
+  const { addTrace } = useTraces()
   const [flowOpen, setFlowOpen] = useState(false)
   const [step, setStep] = useState('pause')
 
@@ -17,7 +19,7 @@ export default function AddButton({ onAdd }) {
   }
 
   const handleComplete = (input) => {
-    onAdd(input)
+    addTrace(input)
     handleClose()
   }
 

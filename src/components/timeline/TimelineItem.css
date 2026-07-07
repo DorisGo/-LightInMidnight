@@ -1,0 +1,31 @@
+.timeline-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.timeline-item__icon {
+  flex-shrink: 0;
+  width: 28px;
+  padding-top: 2px;
+  color: var(--primary);
+}
+
+.timeline-item__title {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.timeline-item__type {
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: var(--primary-light);
+}
+
+.timeline-item__date {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: var(--primary-light);
+}

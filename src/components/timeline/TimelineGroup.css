@@ -1,0 +1,21 @@
+.timeline-group {
+  padding: 0 24px 8px;
+}
+
+.timeline-group__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary-light);
+  padding: 16px 0 4px;
+  border-top: 1px solid rgba(63, 61, 137, 0.1);
+}
+
+.timeline-group:first-child .timeline-group__label {
+  border-top: none;
+  padding-top: 0;
+}
+
+.timeline-group__items {
+  display: flex;
+  flex-direction: column;
+}

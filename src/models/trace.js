@@ -19,6 +19,7 @@
  * @property {string} memory
  * @property {TraceCategory} category
  * @property {Date} occurredAt
+ * @property {Date} recordedAt
  * @property {string} [note]
  */
 
@@ -27,6 +28,7 @@
  * @typedef {Object} Trace
  * @property {string} id
  * @property {Date} occurredAt
+ * @property {Date} recordedAt
  * @property {MarkType} mark
  * @property {CanvasPlacement} placement
  * @property {string} memory
@@ -38,21 +40,43 @@ export const MARK_TYPES = ['star', 'triangle', 'square', 'diamond', 'target', 'd
 
 export const TRACE_CATEGORIES = ['book', 'movie', 'music', 'place', 'other']
 
+/** @type {Record<TraceCategory, string>} */
+export const CATEGORY_LABELS = {
+  book: 'Book',
+  movie: 'Movie',
+  music: 'Music',
+  place: 'Place',
+  other: 'Other',
+}
+
+/** @type {Record<TraceCategory, MarkType>} */
+export const CATEGORY_MARK_MAP = {
+  book: 'square',
+  movie: 'target',
+  music: 'squiggle',
+  place: 'diamond',
+  other: 'star',
+}
+
+/**
+ * @param {TraceCategory} category
+ * @returns {MarkType}
+ */
+export function markForCategory(category) {
+  return CATEGORY_MARK_MAP[category] ?? 'star'
+}
+
+/**
+ * When the user met what they recorded.
+ * @param {Trace} trace
+ * @returns {Date}
+ */
+export function encounterDate(trace) {
+  return trace.occurredAt
+}
+
 const LEGACY_STORAGE_KEY = 'light-in-midnight-events'
 export const STORAGE_KEY = 'light-in-midnight-traces'
-
-function randomMark() {
-  return MARK_TYPES[Math.floor(Math.random() * MARK_TYPES.length)]
-}
-
-export function randomPlacement() {
-  return {
-    x: 8 + Math.random() * 74,
-    y: 12 + Math.random() * 58,
-    rotation: -30 + Math.random() * 60,
-    scale: 0.75 + Math.random() * 0.5,
-  }
-}
 
 /**
  * @param {TraceInput} input
@@ -62,8 +86,9 @@ export function createTrace(input) {
   return {
     id: crypto.randomUUID(),
     occurredAt: input.occurredAt,
-    mark: randomMark(),
-    placement: randomPlacement(),
+    recordedAt: input.recordedAt,
+    mark: markForCategory(input.category),
+    placement: { x: 0, y: 0, rotation: 0, scale: 1 },
     memory: input.memory,
     category: input.category,
     ...(input.note ? { note: input.note } : {}),
@@ -80,15 +105,17 @@ export function parseTrace(raw) {
   const record = /** @type {Record<string, unknown>} */ (raw)
   const id = record.id
   const occurredAtRaw = record.occurredAt ?? record.timestamp
+  const recordedAtRaw = record.recordedAt ?? occurredAtRaw
   const mark = record.mark ?? record.symbol
   const placement = record.placement ?? record.position
 
-  if (typeof id !== 'string' || !occurredAtRaw || !mark || !placement) return null
+  if (typeof id !== 'string' || !occurredAtRaw || !recordedAtRaw || !mark || !placement) return null
 
   /** @type {Trace} */
   const trace = {
     id,
     occurredAt: new Date(/** @type {string|number|Date} */ (occurredAtRaw)),
+    recordedAt: new Date(/** @type {string|number|Date} */ (recordedAtRaw)),
     mark: /** @type {MarkType} */ (mark),
     placement: /** @type {CanvasPlacement} */ (placement),
     memory: typeof record.memory === 'string'
@@ -115,6 +142,7 @@ export function serializeTrace(trace) {
   return {
     id: trace.id,
     occurredAt: trace.occurredAt.toISOString(),
+    recordedAt: trace.recordedAt.toISOString(),
     mark: trace.mark,
     placement: trace.placement,
     memory: trace.memory,
@@ -151,7 +179,7 @@ export function saveTraces(traces) {
  * @param {Trace} trace
  */
 export function isToday(trace) {
-  const date = trace.occurredAt
+  const date = trace.recordedAt
   const now = new Date()
 
   return (

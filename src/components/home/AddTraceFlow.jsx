@@ -87,6 +87,7 @@ export default function AddTraceFlow({ step, onStepChange, onComplete, onDismiss
       memory: memory.trim(),
       category,
       occurredAt: fromDateInputValue(dateValue),
+      recordedAt: new Date(),
       note: note.trim(),
     })
   }

@@ -18,7 +18,7 @@ export function TraceProvider({ children }) {
 
   const todayTraces = traces
     .filter(isToday)
-    .sort((a, b) => b.occurredAt - a.occurredAt)
+    .sort((a, b) => b.recordedAt - a.recordedAt)
 
   return (
     <TraceContext.Provider value={{ traces, todayTraces, addTrace }}>
