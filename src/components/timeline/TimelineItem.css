@@ -29,3 +29,11 @@
   font-size: 0.82rem;
   color: var(--primary-light);
 }
+
+.timeline-item--highlighted {
+  margin: 0 -12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background: rgba(63, 61, 137, 0.06);
+  border-radius: 4px;
+}

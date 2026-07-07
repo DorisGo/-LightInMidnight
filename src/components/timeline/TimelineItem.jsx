@@ -8,13 +8,16 @@ import './TimelineItem.css'
  */
 
 /**
- * @param {{ trace: Trace }} props
+ * @param {{ trace: Trace, highlighted?: boolean }} props
  */
-export default function TimelineItem({ trace }) {
+export default function TimelineItem({ trace, highlighted = false }) {
   const mark = markForCategory(trace.category)
 
   return (
-    <article className="timeline-item">
+    <article
+      id={`timeline-trace-${trace.id}`}
+      className={`timeline-item ${highlighted ? 'timeline-item--highlighted' : ''}`}
+    >
       <div className="timeline-item__icon" aria-hidden="true">
         <MarkShape type={mark} size={22} />
       </div>

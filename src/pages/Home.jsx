@@ -14,7 +14,7 @@ export default function Home() {
     <div className="home-page">
       <Header
         unlockCount={todayTraces.length}
-        onTodayClick={() => navigate('/timeline')}
+        onTodayClick={() => navigate('/today')}
       />
       <Canvas />
       <AddButton />

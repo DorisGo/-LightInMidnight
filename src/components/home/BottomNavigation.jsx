@@ -11,12 +11,15 @@ function HomeIcon({ active }) {
   )
 }
 
-function StatsIcon() {
+function TimelineIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-      <line x1="4" y1="18" x2="4" y2="10" />
-      <line x1="11" y1="18" x2="11" y2="4" />
-      <line x1="18" y1="18" x2="18" y2="13" />
+      <line x1="4" y1="6" x2="18" y2="6" />
+      <circle cx="7" cy="6" r="2" fill="currentColor" stroke="none" />
+      <line x1="4" y1="11" x2="18" y2="11" />
+      <circle cx="14" cy="11" r="2" fill="currentColor" stroke="none" />
+      <line x1="4" y1="16" x2="18" y2="16" />
+      <circle cx="10" cy="16" r="2" fill="currentColor" stroke="none" />
     </svg>
   )
 }
@@ -41,6 +44,7 @@ export default function BottomNavigation() {
   const navigate = useNavigate()
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const isTimeline = location.pathname === '/timeline'
 
   return (
     <nav className="bottom-nav">
@@ -52,15 +56,18 @@ export default function BottomNavigation() {
         <HomeIcon active={isHome} />
         <span>home</span>
       </button>
-      <button className="nav-item" aria-label="stats" disabled>
-        <StatsIcon />
-        <span>stats</span>
+      <button
+        className={`nav-item ${isTimeline ? 'active' : ''}`}
+        onClick={() => navigate('/timeline')}
+        aria-label="timeline"
+      >
+        <TimelineIcon />
+        <span>timeline</span>
       </button>
       <button className="nav-item" aria-label="settings" disabled>
         <SettingsIcon />
         <span>settings</span>
       </button>
-      {/* TODO: wire stats and settings routes */}
     </nav>
   )
 }

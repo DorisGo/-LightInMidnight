@@ -96,6 +96,31 @@ export function createTrace(input) {
 }
 
 /**
+ * @param {Trace} trace
+ * @param {Omit<TraceInput, 'recordedAt'>} input
+ * @returns {Trace}
+ */
+export function applyTraceUpdate(trace, input) {
+  /** @type {Trace} */
+  const updated = {
+    ...trace,
+    memory: input.memory,
+    category: input.category,
+    occurredAt: input.occurredAt,
+    mark: markForCategory(input.category),
+  }
+
+  const note = input.note?.trim()
+  if (note) {
+    updated.note = note
+  } else {
+    delete updated.note
+  }
+
+  return updated
+}
+
+/**
  * @param {unknown} raw
  * @returns {Trace|null}
  */

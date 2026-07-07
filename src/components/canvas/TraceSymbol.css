@@ -1,5 +1,8 @@
 .trace-symbol {
   position: absolute;
   color: var(--primary);
-  pointer-events: none;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
 }
