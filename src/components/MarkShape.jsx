@@ -1,11 +1,12 @@
 const STROKE = 1.8
 
 /**
- * @typedef {import('../models/trace').MarkType} MarkType
+ * @typedef {import('../models/shapePreferences').MarkShapeType} MarkShapeType
+ * @typedef {import('../models/trace').MarkType} LegacyMarkType
  */
 
 /**
- * @param {{ type: MarkType, size?: number }} props
+ * @param {{ type: MarkShapeType | LegacyMarkType, size?: number }} props
  */
 export default function MarkShape({ type, size = 28 }) {
   const props = {
@@ -20,6 +21,12 @@ export default function MarkShape({ type, size = 28 }) {
   }
 
   switch (type) {
+    case 'circle':
+      return (
+        <svg {...props}>
+          <circle cx="14" cy="14" r="11" />
+        </svg>
+      )
     case 'star':
       return (
         <svg {...props}>
@@ -42,6 +49,12 @@ export default function MarkShape({ type, size = 28 }) {
       return (
         <svg {...props}>
           <polygon points="14,2 26,14 14,26 2,14" />
+        </svg>
+      )
+    case 'hexagon':
+      return (
+        <svg {...props}>
+          <polygon points="14,3 24,9.5 24,18.5 14,25 4,18.5 4,9.5" />
         </svg>
       )
     case 'target':

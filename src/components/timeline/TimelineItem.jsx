@@ -1,5 +1,6 @@
 import MarkShape from '../MarkShape'
-import { CATEGORY_LABELS, markForCategory } from '../../models/trace'
+import { CATEGORY_LABELS } from '../../models/trace'
+import { useShapePreferences } from '../../context/ShapePreferenceContext'
 import { formatEncounterDate } from '../../lib/timeline'
 import './TimelineItem.css'
 
@@ -11,7 +12,8 @@ import './TimelineItem.css'
  * @param {{ trace: Trace, highlighted?: boolean }} props
  */
 export default function TimelineItem({ trace, highlighted = false }) {
-  const mark = markForCategory(trace.category)
+  const { getMarkForTrace } = useShapePreferences()
+  const mark = getMarkForTrace(trace)
 
   return (
     <article

@@ -45,6 +45,7 @@ export default function BottomNavigation() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const isTimeline = location.pathname === '/timeline'
+  const isSettings = location.pathname === '/settings'
 
   return (
     <nav className="bottom-nav">
@@ -64,7 +65,11 @@ export default function BottomNavigation() {
         <TimelineIcon />
         <span>timeline</span>
       </button>
-      <button className="nav-item" aria-label="settings" disabled>
+      <button
+        className={`nav-item ${isSettings ? 'active' : ''}`}
+        onClick={() => navigate('/settings')}
+        aria-label="settings"
+      >
         <SettingsIcon />
         <span>settings</span>
       </button>

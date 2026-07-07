@@ -1,5 +1,5 @@
 import MarkShape from '../MarkShape'
-import { markForCategory } from '../../models/trace'
+import { useShapePreferences } from '../../context/ShapePreferenceContext'
 import { getPredefinedPlacement } from '../../lib/placement'
 import './TraceSymbol.css'
 
@@ -11,7 +11,8 @@ import './TraceSymbol.css'
  * @param {{ trace: Trace, index: number, onSelect: (trace: Trace) => void }} props
  */
 export default function TraceSymbol({ trace, index, onSelect }) {
-  const mark = markForCategory(trace.category)
+  const { getMarkForTrace } = useShapePreferences()
+  const mark = getMarkForTrace(trace)
   const placement = getPredefinedPlacement(index)
 
   return (

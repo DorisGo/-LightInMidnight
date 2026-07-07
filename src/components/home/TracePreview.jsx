@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import MarkShape from '../MarkShape'
-import { markForCategory } from '../../models/trace'
+import { useShapePreferences } from '../../context/ShapePreferenceContext'
 import { previewNote } from '../../lib/tracePreview'
 import '../home/AddTraceFlow.css'
 import './TracePreview.css'
@@ -22,7 +22,8 @@ function formatRecordedTime(date) {
  */
 export default function TracePreview({ trace, onClose }) {
   const navigate = useNavigate()
-  const mark = markForCategory(trace.category)
+  const { getMarkForTrace } = useShapePreferences()
+  const mark = getMarkForTrace(trace)
   const notePreview = previewNote(trace.note)
 
   return (
