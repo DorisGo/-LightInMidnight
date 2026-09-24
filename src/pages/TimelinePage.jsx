@@ -7,6 +7,7 @@ import TimelineHeader from '../components/timeline/TimelineHeader'
 import TimelineSwitcher from '../components/timeline/TimelineSwitcher'
 import TimelineGroup from '../components/timeline/TimelineGroup'
 import CalendarMonth from '../components/timeline/CalendarMonth'
+import YearStarMap from '../components/timeline/YearStarMap'
 import { getPeriodTitle, groupTraces, shiftPeriod } from '../lib/timeline'
 import { tracesOnDay } from '../lib/calendar'
 import { getTimelineFocusForTrace } from '../lib/tracePreview'
@@ -105,6 +106,23 @@ export default function TimelinePage() {
                 <p className="timeline-day__empty">{selectedDayLabel} · A quiet day.</p>
               )}
             </div>
+          </>
+        ) : mode === 'year' ? (
+          <>
+            <YearStarMap
+              traces={traces}
+              year={referenceDate.getFullYear()}
+              onSelect={setPreviewTrace}
+            />
+            {groups.map((group) => (
+              <TimelineGroup
+                key={group.key}
+                label={group.label}
+                traces={group.traces}
+                highlightId={focusId}
+                onSelect={setPreviewTrace}
+              />
+            ))}
           </>
         ) : traces.length === 0 ? (
           <div className="timeline-empty">

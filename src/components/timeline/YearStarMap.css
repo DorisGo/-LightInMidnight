@@ -1,0 +1,199 @@
+.star-map {
+  --night: #1c1a44;
+  --night-deep: #131232;
+  --starlight: #f4efdf;
+
+  margin: 0 16px 8px;
+  padding: 12px 8px 14px;
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 50% 40%, var(--night) 0%, var(--night-deep) 100%);
+  box-shadow: 0 10px 30px rgba(28, 26, 68, 0.22);
+}
+
+.star-map__sky {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.star-map__rim {
+  fill: none;
+  stroke: var(--starlight);
+  stroke-opacity: 0.18;
+  stroke-width: 0.6;
+}
+
+.star-map__orbit {
+  fill: none;
+  stroke: var(--starlight);
+  stroke-opacity: 0.07;
+  stroke-width: 0.5;
+  stroke-dasharray: 1 3;
+}
+
+.star-map__tick {
+  stroke: var(--starlight);
+  stroke-opacity: 0.3;
+  stroke-width: 0.6;
+}
+
+.star-map__month {
+  fill: var(--starlight);
+  fill-opacity: 0.45;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.star-map__today {
+  stroke: var(--starlight);
+  stroke-opacity: 0.22;
+  stroke-width: 0.6;
+  stroke-dasharray: 2 2;
+}
+
+.star-map__link {
+  stroke: var(--starlight);
+  stroke-opacity: 0.12;
+  stroke-width: 0.5;
+}
+
+.star-map__year {
+  fill: var(--starlight);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 30px;
+  font-weight: 500;
+  text-anchor: middle;
+  letter-spacing: 0.02em;
+}
+
+.star-map__caption {
+  fill: var(--starlight);
+  fill-opacity: 0.5;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 10px;
+  font-style: italic;
+  text-anchor: middle;
+}
+
+/* ── arcs ── */
+
+.star-map__arc,
+.star-map__star {
+  cursor: pointer;
+  outline: none;
+}
+
+.star-map__arc-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 9;
+}
+
+.star-map__arc-line {
+  fill: none;
+  stroke: var(--starlight);
+  stroke-opacity: 0.6;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  transition: stroke-opacity 0.2s, stroke-width 0.2s;
+}
+
+.star-map__arc--paused .star-map__arc-line {
+  stroke-opacity: 0.35;
+  stroke-dasharray: 2 3;
+}
+
+.star-map__arc--ongoing .star-map__arc-line {
+  stroke-opacity: 0.8;
+}
+
+.star-map__arc:hover .star-map__arc-line,
+.star-map__arc:focus-visible .star-map__arc-line {
+  stroke-opacity: 1;
+  stroke-width: 2;
+}
+
+.star-map__session {
+  fill: var(--starlight);
+}
+
+.star-map__head {
+  fill: var(--starlight);
+}
+
+.star-map__head-glow {
+  fill: var(--starlight);
+  opacity: 0.7;
+}
+
+/* ── stars ── */
+
+.star-map__star-hit {
+  fill: transparent;
+}
+
+.star-map__star-core {
+  fill: var(--starlight);
+}
+
+.star-map__star-glow {
+  fill: var(--starlight);
+  opacity: 0.45;
+  animation: star-twinkle 5s ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+.star-map__star:hover .star-map__star-glow,
+.star-map__star:focus-visible .star-map__star-glow {
+  opacity: 0.9;
+  animation: none;
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star-map__star-glow {
+    animation: none;
+  }
+}
+
+/* ── legend ── */
+
+.star-map__legend {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 4px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--starlight);
+  opacity: 0.55;
+}
+
+.star-map__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star-map__legend-star {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--starlight);
+  box-shadow: 0 0 4px var(--starlight);
+}
+
+.star-map__legend-arc {
+  width: 16px;
+  height: 7px;
+  border-top: 1.4px solid var(--starlight);
+  border-radius: 50% 50% 0 0;
+}
