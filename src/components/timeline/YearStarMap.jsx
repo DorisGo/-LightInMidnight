@@ -35,8 +35,8 @@ export default function YearStarMap({ traces, year, onSelect }) {
       >
         <defs>
           <radialGradient id="star-map-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#4a4796" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="#4a4796" stopOpacity="0" />
+            <stop className="star-map__halo-stop" offset="0%" />
+            <stop className="star-map__halo-stop star-map__halo-stop--edge" offset="100%" />
           </radialGradient>
           <filter id="star-map-blur" x="-200%" y="-200%" width="500%" height="500%">
             <feGaussianBlur stdDeviation="2.2" />

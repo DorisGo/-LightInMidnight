@@ -8,7 +8,8 @@ import TimelineSwitcher from '../components/timeline/TimelineSwitcher'
 import TimelineGroup from '../components/timeline/TimelineGroup'
 import CalendarMonth from '../components/timeline/CalendarMonth'
 import YearStarMap from '../components/timeline/YearStarMap'
-import { getPeriodTitle, groupTraces, shiftPeriod } from '../lib/timeline'
+import WeekAlbum from '../components/timeline/WeekAlbum'
+import { getPeriodTitle, groupTraces, shiftPeriod, buildWeekAlbum } from '../lib/timeline'
 import { tracesOnDay } from '../lib/calendar'
 import { getTimelineFocusForTrace } from '../lib/tracePreview'
 import { toDateInputValue } from '../models/trace'
@@ -49,6 +50,10 @@ export default function TimelinePage() {
     [traces, mode, referenceDate],
   )
   const hasVisibleGroups = groups.some((group) => group.traces.length > 0)
+  const albumDays = useMemo(
+    () => (mode === 'week' ? buildWeekAlbum(traces, referenceDate) : []),
+    [traces, mode, referenceDate],
+  )
 
   const selectedKey = toDateInputValue(selectedDay)
   const selectedDayLabel = selectedDay.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
@@ -124,6 +129,15 @@ export default function TimelinePage() {
               />
             ))}
           </>
+        ) : mode === 'week' ? (
+          albumDays.length > 0 ? (
+            <WeekAlbum days={albumDays} onSelect={setPreviewTrace} />
+          ) : (
+            <div className="timeline-empty">
+              <p className="timeline-empty__title">A quiet week.</p>
+              <p className="timeline-empty__hint">Nothing left here yet.</p>
+            </div>
+          )
         ) : traces.length === 0 ? (
           <div className="timeline-empty">
             <p className="timeline-empty__title">No traces yet.</p>

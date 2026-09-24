@@ -4,7 +4,7 @@
   margin: 16px 24px 24px;
   padding: 4px;
   border-radius: 999px;
-  background: rgba(63, 61, 137, 0.06);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
 }
 
 .timeline-switcher__option {
@@ -19,5 +19,5 @@
 .timeline-switcher__option.active {
   background: var(--bg);
   color: var(--primary);
-  box-shadow: 0 1px 3px rgba(63, 61, 137, 0.08);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--ink) 8%, transparent);
 }

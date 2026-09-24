@@ -1,13 +1,21 @@
 .star-map {
-  --night: #1c1a44;
-  --night-deep: #131232;
-  --starlight: #f4efdf;
+  --starlight: var(--star);
 
   margin: 0 16px 8px;
   padding: 12px 8px 14px;
   border-radius: 20px;
-  background: radial-gradient(ellipse at 50% 40%, var(--night) 0%, var(--night-deep) 100%);
-  box-shadow: 0 10px 30px rgba(28, 26, 68, 0.22);
+  background: radial-gradient(ellipse at 50% 40%, var(--sky) 0%, var(--sky-deep) 100%);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--sky-deep) calc(22% * var(--star-glow)), transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) calc(12% * (1 - var(--star-glow))), transparent);
+}
+
+.star-map__halo-stop {
+  stop-color: var(--starlight);
+  stop-opacity: calc(0.14 * var(--star-glow));
+}
+
+.star-map__halo-stop--edge {
+  stop-opacity: 0;
 }
 
 .star-map__sky {
@@ -62,7 +70,7 @@
 
 .star-map__year {
   fill: var(--starlight);
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--serif);
   font-size: 30px;
   font-weight: 500;
   text-anchor: middle;
@@ -72,7 +80,7 @@
 .star-map__caption {
   fill: var(--starlight);
   fill-opacity: 0.5;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--serif);
   font-size: 10px;
   font-style: italic;
   text-anchor: middle;
@@ -117,15 +125,15 @@
 }
 
 .star-map__session {
-  fill: var(--starlight);
+  fill: var(--star-accent);
 }
 
 .star-map__head {
-  fill: var(--starlight);
+  fill: var(--star-accent);
 }
 
 .star-map__head-glow {
-  fill: var(--starlight);
+  fill: var(--star-accent);
   opacity: 0.7;
 }
 
@@ -141,7 +149,7 @@
 
 .star-map__star-glow {
   fill: var(--starlight);
-  opacity: 0.45;
+  opacity: calc(0.45 * var(--star-glow));
   animation: star-twinkle 5s ease-in-out infinite;
   animation-delay: var(--twinkle-delay, 0s);
 }
@@ -153,8 +161,8 @@
 }
 
 @keyframes star-twinkle {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 0.15; }
+  0%, 100% { opacity: calc(0.45 * var(--star-glow)); }
+  50% { opacity: calc(0.15 * var(--star-glow)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -170,7 +178,7 @@
   justify-content: center;
   gap: 18px;
   margin-top: 4px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--serif);
   font-size: 0.8rem;
   font-style: italic;
   color: var(--starlight);
@@ -188,7 +196,7 @@
   height: 4px;
   border-radius: 50%;
   background: var(--starlight);
-  box-shadow: 0 0 4px var(--starlight);
+  box-shadow: 0 0 calc(4px * var(--star-glow)) var(--starlight);
 }
 
 .star-map__legend-arc {

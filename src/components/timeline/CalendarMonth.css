@@ -5,8 +5,9 @@
 .calendar-month__weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding-bottom: 6px;
-  font-size: 0.7rem;
+  padding-bottom: 10px;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
   text-align: center;
   color: var(--primary-light);
 }
@@ -16,123 +17,193 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  grid-template-rows: 20px 15px 15px minmax(52px, auto);
-  row-gap: 2px;
-  padding-bottom: 6px;
-  border-top: 1px solid rgba(63, 61, 137, 0.08);
+  grid-template-rows: 26px 13px 13px minmax(10px, auto);
+  row-gap: 1px;
+  padding-bottom: 10px;
 }
 
 .calendar-day {
   grid-row: 1 / -1;
   display: flex;
   justify-content: center;
-  padding-top: 4px;
-  border-radius: 6px;
-  transition: background 0.15s;
+  border-radius: 10px;
+  transition: background 0.2s;
 }
 
 .calendar-day:hover {
-  background: rgba(63, 61, 137, 0.03);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
 }
 
 .calendar-day--selected {
-  background: rgba(63, 61, 137, 0.06);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
 }
 
 .calendar-day__number {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
   border-radius: 50%;
-  font-size: 0.72rem;
+  font-family: var(--serif);
+  font-size: 0.95rem;
   line-height: 1;
 }
 
 .calendar-day--outside .calendar-day__number {
-  opacity: 0.3;
+  opacity: 0.22;
 }
 
 .calendar-day--today .calendar-day__number {
-  background: var(--primary);
-  color: var(--bg);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
 }
 
-/* ── span bars ── */
+/* ── span lines ── */
 
 .span-bar {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: center;
   min-width: 0;
-  margin: 0 -1px;
-  padding: 0 6px;
-  background: rgba(63, 61, 137, 0.13);
-  overflow: hidden;
 }
 
-.span-bar--begins {
-  margin-left: 3px;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+.span-bar__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: color-mix(in srgb, var(--ink) 50%, transparent);
+  transition: background 0.2s;
 }
 
-.span-bar--ends {
-  margin-right: 3px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+.span-bar:hover .span-bar__line {
+  background: var(--ink);
 }
 
-/* Still going: the line softens toward today instead of closing. */
-.span-bar--ongoing.span-bar--ends {
-  border-radius: 8px 0 0 8px;
+.span-bar__cap {
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.span-bar__cap--start {
+  left: 6px;
+}
+
+.span-bar--begins .span-bar__line {
+  left: 8px;
+}
+
+.span-bar__cap--end {
+  right: 6px;
+}
+
+.span-bar--ends .span-bar__line {
+  right: 8px;
+}
+
+/* Still going: the line warms toward today and ends in a small light. */
+.span-bar--ongoing .span-bar__line {
   background: linear-gradient(
     to right,
-    rgba(63, 61, 137, 0.13) calc(100% - 28px),
-    rgba(63, 61, 137, 0)
+    color-mix(in srgb, var(--ink) 50%, transparent),
+    color-mix(in srgb, var(--accent) 80%, transparent)
   );
 }
 
-.span-bar--ongoing.span-bar--ends:not(.span-bar--begins) {
-  border-radius: 0;
+.span-bar--ongoing .span-bar__cap--end {
+  background: var(--accent);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 /* Set aside: it stays, only quieter. */
-.span-bar--paused {
+.span-bar--paused .span-bar__line {
+  height: 0;
+  background: none;
+  border-top: 1.5px dotted color-mix(in srgb, var(--ink) 40%, transparent);
+}
+
+.span-bar--paused .span-bar__cap--end {
   background: transparent;
-  border: 1px dashed rgba(63, 61, 137, 0.3);
-  border-left: none;
-  border-right: none;
-}
-
-.span-bar--paused.span-bar--begins {
-  border-left: 1px dashed rgba(63, 61, 137, 0.3);
-}
-
-.span-bar--paused.span-bar--ends {
-  border-right: 1px dashed rgba(63, 61, 137, 0.3);
-}
-
-.span-bar__label {
-  position: relative;
-  font-size: 0.6rem;
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 50%, transparent);
 }
 
 .span-bar__session {
   position: absolute;
-  bottom: 2px;
+  top: 50%;
   width: 3px;
   height: 3px;
-  margin-left: -1.5px;
+  margin: -1.5px 0 0 -1.5px;
   border-radius: 50%;
-  background: var(--primary);
-  opacity: 0.55;
+  background: var(--accent);
+}
+
+/* Selected: the line opens into a ribbon carrying the title. */
+.span-bar--selected {
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  animation: ribbon-open 0.25s ease-out;
+}
+
+.span-bar--selected.span-bar--begins {
+  margin-left: 2px;
+  border-radius: 7px 0 0 7px;
+}
+
+.span-bar--selected.span-bar--ends {
+  margin-right: 2px;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.span-bar--selected.span-bar--ongoing.span-bar--ends {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--ink) 14%, transparent),
+    color-mix(in srgb, var(--accent) 30%, transparent)
+  );
+}
+
+.span-bar--selected.span-bar--paused {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 28%, transparent);
+}
+
+.span-bar--selected .span-bar__line,
+.span-bar--selected .span-bar__cap {
+  display: none;
+}
+
+.span-bar--selected .span-bar__session {
+  top: auto;
+  bottom: 2px;
+  margin-top: 0;
+}
+
+.span-bar__label {
+  position: relative;
+  font-size: 0.62rem;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+
+@keyframes ribbon-open {
+  from {
+    transform: scaleY(0.2);
+    opacity: 0.4;
+  }
 }
 
 /* ── covers ── */
@@ -144,12 +215,12 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 2px;
+  padding-top: 4px;
   pointer-events: none;
 }
 
 .calendar-day__moments--outside {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .calendar-day__thumb,
@@ -157,20 +228,31 @@
   pointer-events: auto;
 }
 
+.calendar-day__thumb {
+  transition: transform 0.25s ease;
+}
+
 .calendar-day__thumb--0 {
-  transform: rotate(-3deg);
+  transform: rotate(-2deg);
 }
 
 .calendar-day__thumb--1 {
-  margin-left: -18px;
-  margin-top: 5px;
-  transform: rotate(5deg);
+  margin-left: -24px;
+  margin-top: 6px;
+  transform: rotate(4deg);
+}
+
+.calendar-day__thumb:hover {
+  z-index: 2;
+  transform: translateY(-2px) rotate(0deg);
 }
 
 .calendar-day__more {
   position: absolute;
-  right: 2px;
-  bottom: -2px;
-  font-size: 0.6rem;
+  right: 0;
+  bottom: -4px;
+  font-family: var(--serif);
+  font-size: 0.72rem;
+  font-style: italic;
   color: var(--primary-light);
 }

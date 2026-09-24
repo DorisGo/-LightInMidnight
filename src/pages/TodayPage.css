@@ -50,7 +50,7 @@
 
 .today-page__item {
   padding: 14px 0;
-  border-bottom: 1px solid rgba(63, 61, 137, 0.1);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 .today-page__time {

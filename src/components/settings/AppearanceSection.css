@@ -1,0 +1,107 @@
+.appearance {
+  padding: 0 24px 28px;
+}
+
+.appearance__title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.appearance__hint {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--primary-light);
+}
+
+.appearance__palettes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.appearance__palette {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.appearance__palette.active {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+
+.appearance__swatches {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.appearance__swatches i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--bg);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+.appearance__swatches i + i {
+  margin-left: -6px;
+}
+
+.appearance__palette-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.appearance__palette-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.appearance__palette-hint {
+  font-size: 0.78rem;
+  color: var(--primary-light);
+}
+
+.appearance__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.appearance__label {
+  font-size: 0.9rem;
+}
+
+.appearance__segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+
+.appearance__segment {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--primary-light);
+  transition: background 0.15s, color 0.15s;
+}
+
+.appearance__segment.active {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--ink) 10%, transparent);
+}

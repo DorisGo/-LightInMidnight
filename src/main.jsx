@@ -4,16 +4,19 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { TraceProvider } from './context/TraceContext'
 import { ShapePreferenceProvider } from './context/ShapePreferenceContext'
+import { AppearanceProvider } from './context/AppearanceContext'
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <TraceProvider>
-        <ShapePreferenceProvider>
-          <App />
-        </ShapePreferenceProvider>
-      </TraceProvider>
+      <AppearanceProvider>
+        <TraceProvider>
+          <ShapePreferenceProvider>
+            <App />
+          </ShapePreferenceProvider>
+        </TraceProvider>
+      </AppearanceProvider>
     </BrowserRouter>
   </StrictMode>,
 )

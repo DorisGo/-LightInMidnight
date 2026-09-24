@@ -1,6 +1,7 @@
 import BottomNavigation from '../components/home/BottomNavigation'
 import SettingsHeader from '../components/settings/SettingsHeader'
 import ShapePreferencesSection from '../components/settings/ShapePreferencesSection'
+import AppearanceSection from '../components/settings/AppearanceSection'
 import './SettingsPage.css'
 
 export default function SettingsPage() {
@@ -8,6 +9,7 @@ export default function SettingsPage() {
     <div className="settings-page">
       <SettingsHeader />
       <div className="settings-page__content">
+        <AppearanceSection />
         <ShapePreferencesSection />
       </div>
       <BottomNavigation />

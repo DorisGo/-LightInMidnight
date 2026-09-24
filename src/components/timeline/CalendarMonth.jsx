@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import TraceThumb from '../trace/TraceThumb'
 import { buildMonthCalendar, MAX_LANES } from '../../lib/calendar'
 import './CalendarMonth.css'
@@ -11,9 +11,10 @@ import './CalendarMonth.css'
 const WEEKDAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 /**
- * @param {{ segment: SpanSegment, onSelect: (trace: Trace) => void }} props
+ * A lasting trace inside one week: a quiet line, or a ribbon with its title once selected.
+ * @param {{ segment: SpanSegment, selected: boolean, onSelect: (trace: Trace) => void }} props
  */
-function SpanBar({ segment, onSelect }) {
+function SpanBar({ segment, selected, onSelect }) {
   const { trace, startCol, endCol, beginsHere, endsHere, lane, sessionCols } = segment
   const length = endCol - startCol + 1
   const status = trace.span?.status ?? 'ongoing'
@@ -23,6 +24,7 @@ function SpanBar({ segment, onSelect }) {
     `span-bar--${status}`,
     beginsHere && 'span-bar--begins',
     endsHere && 'span-bar--ends',
+    selected && 'span-bar--selected',
   ].filter(Boolean).join(' ')
 
   return (
@@ -32,10 +34,14 @@ function SpanBar({ segment, onSelect }) {
       style={{ gridColumn: `${startCol + 1} / ${endCol + 2}`, gridRow: lane + 2 }}
       onClick={() => onSelect(trace)}
       aria-label={trace.memory}
+      aria-pressed={selected}
     >
-      {(beginsHere || startCol === 0) && length > 1 && (
+      <span className="span-bar__line" aria-hidden="true" />
+      {selected && (beginsHere || startCol === 0) && (
         <span className="span-bar__label">{trace.memory}</span>
       )}
+      {beginsHere && <span className="span-bar__cap span-bar__cap--start" aria-hidden="true" />}
+      {endsHere && <span className="span-bar__cap span-bar__cap--end" aria-hidden="true" />}
       {sessionCols.map((col) => (
         <span
           key={col}
@@ -58,6 +64,22 @@ function SpanBar({ segment, onSelect }) {
  * }} props
  */
 export default function CalendarMonth({ traces, referenceDate, selectedKey, onSelectDay, onSelectTrace }) {
+  // First tap on a line turns it into a ribbon; a second tap opens it.
+  const [selectedSpanId, setSelectedSpanId] = useState(/** @type {string|null} */ (null))
+
+  const handleSpan = (/** @type {Trace} */ trace) => {
+    if (selectedSpanId === trace.id) {
+      onSelectTrace(trace)
+    } else {
+      setSelectedSpanId(trace.id)
+    }
+  }
+
+  const handleDay = (/** @type {Date} */ date) => {
+    setSelectedSpanId(null)
+    onSelectDay(date)
+  }
+
   const weeks = useMemo(
     () => buildMonthCalendar(traces, referenceDate),
     [traces, referenceDate],
@@ -84,7 +106,7 @@ export default function CalendarMonth({ traces, referenceDate, selectedKey, onSe
                 day.key === selectedKey && 'calendar-day--selected',
               ].filter(Boolean).join(' ')}
               style={{ gridColumn: col + 1 }}
-              onClick={() => onSelectDay(day.date)}
+              onClick={() => handleDay(day.date)}
               aria-label={day.date.toDateString()}
             >
               <span className="calendar-day__number">{day.date.getDate()}</span>
@@ -94,7 +116,12 @@ export default function CalendarMonth({ traces, referenceDate, selectedKey, onSe
           {week.segments
             .filter((segment) => segment.lane < MAX_LANES)
             .map((segment) => (
-              <SpanBar key={segment.trace.id} segment={segment} onSelect={onSelectTrace} />
+              <SpanBar
+                key={segment.trace.id}
+                segment={segment}
+                selected={segment.trace.id === selectedSpanId}
+                onSelect={handleSpan}
+              />
             ))}
 
           {week.days.map((day, col) => {
@@ -115,14 +142,14 @@ export default function CalendarMonth({ traces, referenceDate, selectedKey, onSe
                     onClick={() => onSelectTrace(trace)}
                     aria-label={trace.memory}
                   >
-                    <TraceThumb trace={trace} width={30} />
+                    <TraceThumb trace={trace} width={36} />
                   </button>
                 ))}
                 {extra > 0 && (
                   <button
                     type="button"
                     className="calendar-day__more"
-                    onClick={() => onSelectDay(day.date)}
+                    onClick={() => handleDay(day.date)}
                   >
                     +{extra}
                   </button>

@@ -234,3 +234,52 @@ export function formatTraceDates(trace) {
 
   return `${range} · ${SPAN_STATUS_LABELS[status]}`
 }
+
+/**
+ * @typedef {Object} AlbumEntry
+ * @property {Trace} trace
+ * @property {'began'|'finished'|'paused'|null} milestone  where a lasting trace stood that day
+ */
+
+/**
+ * @typedef {Object} AlbumDay
+ * @property {Date} date
+ * @property {AlbumEntry[]} entries
+ */
+
+/**
+ * One week as an album, newest day first. Only days that hold something appear.
+ * A lasting trace shows up on the day it began and the day it ended.
+ * @param {Trace[]} traces
+ * @param {Date} referenceDate
+ * @returns {AlbumDay[]}
+ */
+export function buildWeekAlbum(traces, referenceDate) {
+  const weekStart = startOfWeek(referenceDate)
+  const days = []
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(weekStart)
+    date.setDate(weekStart.getDate() + i)
+    const key = date.toDateString()
+
+    /** @type {AlbumEntry[]} */
+    const entries = []
+    for (const trace of sortTracesByEncounter(traces)) {
+      const began = trace.occurredAt.toDateString() === key
+      const ended = trace.span?.endedAt?.toDateString() === key
+
+      if (!trace.span) {
+        if (began) entries.push({ trace, milestone: null })
+      } else if (ended) {
+        entries.push({ trace, milestone: trace.span.status === 'paused' ? 'paused' : 'finished' })
+      } else if (began) {
+        entries.push({ trace, milestone: 'began' })
+      }
+    }
+
+    if (entries.length > 0) days.push({ date, entries })
+  }
+
+  return days
+}

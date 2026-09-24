@@ -10,7 +10,7 @@
 
 .settings-header__quote {
   margin-top: 14px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--serif);
   font-size: 1.05rem;
   font-style: italic;
   line-height: 1.55;

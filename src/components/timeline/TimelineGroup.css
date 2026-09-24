@@ -7,7 +7,7 @@
   font-weight: 500;
   color: var(--primary-light);
   padding: 16px 0 4px;
-  border-top: 1px solid rgba(63, 61, 137, 0.1);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 .timeline-group:first-child .timeline-group__label {

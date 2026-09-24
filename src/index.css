@@ -1,9 +1,104 @@
-:root {
+/*
+ * Themes: data-mode (paper | night) × data-palette (candle | indigo | amber).
+ * Candle on paper is the default.
+ * Components only read the tokens below; raw colors live here.
+ */
+[data-mode='paper'][data-palette='indigo'] {
   --bg: #f5f5f0;
-  --primary: #3f3d89;
-  --primary-light: rgba(63, 61, 137, 0.55);
-  --stroke: 1.8px;
+  --paper: #f7f4ec;
+  --ink: #3f3d89;
+  --accent: #3f3d89;
+  --sky: #1c1a44;
+  --sky-deep: #131232;
+  --star: #f4efdf;
+  --star-accent: #f4efdf;
+  --star-glow: 1;
 }
+
+:root,
+[data-mode='paper'][data-palette='candle'] {
+  --bg: #f6f2e9;
+  --paper: #faf6ec;
+  --ink: #3f3d89;
+  --accent: #c47f1f;
+  --sky: #1c1a44;
+  --sky-deep: #131232;
+  --star: #f6e7c4;
+  --star-accent: #f2b457;
+  --star-glow: 1;
+}
+
+[data-mode='paper'][data-palette='amber'] {
+  --bg: #f4ede0;
+  --paper: #f8f1e3;
+  --ink: #5b3a1f;
+  --accent: #b86b12;
+  --sky: #2b1c10;
+  --sky-deep: #1b1109;
+  --star: #f6dfae;
+  --star-accent: #f0a640;
+  --star-glow: 1;
+}
+
+[data-mode='night'][data-palette='indigo'] {
+  --bg: #15143a;
+  --paper: #1d1b47;
+  --ink: #ece8f7;
+  --accent: #b9b4ff;
+  --sky: #1d1b47;
+  --sky-deep: #15143a;
+  --star: #f4efdf;
+  --star-accent: #f4efdf;
+  --star-glow: 1;
+}
+
+[data-mode='night'][data-palette='candle'] {
+  --bg: #15143a;
+  --paper: #1d1b47;
+  --ink: #efe9dc;
+  --accent: #f2b457;
+  --sky: #1d1b47;
+  --sky-deep: #15143a;
+  --star: #f8dca0;
+  --star-accent: #f2b457;
+  --star-glow: 1;
+}
+
+[data-mode='night'][data-palette='amber'] {
+  --bg: #1c130c;
+  --paper: #261a10;
+  --ink: #f3e3c3;
+  --accent: #f0a640;
+  --sky: #261a10;
+  --sky-deep: #1c130c;
+  --star: #f6dfae;
+  --star-accent: #f0a640;
+  --star-glow: 1;
+}
+
+/* Native controls (date pickers, scrollbars) follow the time of day. */
+[data-mode='night'] {
+  color-scheme: dark;
+}
+
+/* Paper can print the year as an ink star atlas instead of a glowing sky. */
+[data-mode='paper'][data-sky='atlas'] {
+  --sky: var(--paper);
+  --sky-deep: var(--paper);
+  --star: var(--ink);
+  --star-accent: var(--accent);
+  --star-glow: 0;
+}
+
+:root,
+[data-mode] {
+  --primary: var(--ink);
+  --primary-light: color-mix(in srgb, var(--ink) 55%, transparent);
+  --stroke: 1.8px;
+  --serif: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
 
 *,
 *::before,
@@ -20,7 +115,8 @@ body,
 }
 
 body {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--sans);
+  font-variant-numeric: lining-nums;
   background: var(--bg);
   color: var(--primary);
   -webkit-font-smoothing: antialiased;

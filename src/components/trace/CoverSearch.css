@@ -3,7 +3,7 @@
   flex-direction: column;
   max-height: 240px;
   overflow-y: auto;
-  border-top: 1px solid rgba(63, 61, 137, 0.1);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 .cover-search__hint {
@@ -18,12 +18,12 @@
   gap: 12px;
   padding: 8px 2px;
   text-align: left;
-  border-bottom: 1px solid rgba(63, 61, 137, 0.06);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
 }
 
 .cover-search__item:hover,
 .cover-search__item:focus-visible {
-  background: rgba(63, 61, 137, 0.05);
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
   outline: none;
 }
 
@@ -33,7 +33,7 @@
   height: 46px;
   object-fit: cover;
   border-radius: 2px;
-  background: rgba(63, 61, 137, 0.08);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
 }
 
 .cover-search__text {
