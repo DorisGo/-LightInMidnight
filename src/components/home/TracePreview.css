@@ -101,3 +101,41 @@
   color: var(--primary-light);
   opacity: 0.6;
 }
+
+.trace-preview__cover {
+  margin-bottom: 18px;
+  transform: rotate(-2deg);
+}
+
+.trace-preview__subtitle {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--primary-light);
+}
+
+.trace-preview__span-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.trace-preview__chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(63, 61, 137, 0.22);
+  font-size: 0.78rem;
+  color: var(--primary-light);
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.trace-preview__chip:hover,
+.trace-preview__chip.active {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.trace-preview__chip.active {
+  background: rgba(63, 61, 137, 0.06);
+}

@@ -6,9 +6,9 @@ import './TimelineGroup.css'
  */
 
 /**
- * @param {{ label: string, traces: Trace[], highlightId?: string | null }} props
+ * @param {{ label: string, traces: Trace[], highlightId?: string | null, onSelect?: (trace: Trace) => void }} props
  */
-export default function TimelineGroup({ label, traces, highlightId = null }) {
+export default function TimelineGroup({ label, traces, highlightId = null, onSelect }) {
   if (traces.length === 0) return null
 
   return (
@@ -20,6 +20,7 @@ export default function TimelineGroup({ label, traces, highlightId = null }) {
             key={trace.id}
             trace={trace}
             highlighted={trace.id === highlightId}
+            onSelect={onSelect}
           />
         ))}
       </div>

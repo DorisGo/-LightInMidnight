@@ -1,5 +1,13 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
-import { createTrace, applyTraceUpdate, loadTraces, saveTraces, isToday } from '../models/trace'
+import {
+  createTrace,
+  applyTraceUpdate,
+  loadTraces,
+  saveTraces,
+  isToday,
+  toggleSpanSession,
+  setSpanStatus,
+} from '../models/trace'
 
 const TraceContext = createContext(null)
 
@@ -26,12 +34,32 @@ export function TraceProvider({ children }) {
     setTraces((prev) => prev.filter((trace) => trace.id !== id))
   }, [])
 
+  const toggleSession = useCallback((id, dayKey) => {
+    setTraces((prev) =>
+      prev.map((trace) => (trace.id === id ? toggleSpanSession(trace, dayKey) : trace)),
+    )
+  }, [])
+
+  const changeSpanStatus = useCallback((id, status, on) => {
+    setTraces((prev) =>
+      prev.map((trace) => (trace.id === id ? setSpanStatus(trace, status, on) : trace)),
+    )
+  }, [])
+
   const todayTraces = traces
     .filter(isToday)
     .sort((a, b) => b.recordedAt - a.recordedAt)
 
   return (
-    <TraceContext.Provider value={{ traces, todayTraces, addTrace, updateTrace, deleteTrace }}>
+    <TraceContext.Provider value={{
+        traces,
+        todayTraces,
+        addTrace,
+        updateTrace,
+        deleteTrace,
+        toggleSession,
+        changeSpanStatus,
+      }}>
       {children}
     </TraceContext.Provider>
   )

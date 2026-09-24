@@ -1,6 +1,8 @@
+import { SPAN_STATUS_LABELS } from '../models/trace'
+
 /**
  * @typedef {import('../models/trace').Trace} Trace
- * @typedef {'week' | 'month' | 'year'} TimelineMode
+ * @typedef {'week' | 'month' | 'year' | 'calendar'} TimelineMode
  */
 
 /**
@@ -112,7 +114,7 @@ export function getPeriodTitle(mode, referenceDate = new Date()) {
     return String(referenceDate.getFullYear())
   }
 
-  if (mode === 'month') {
+  if (mode === 'month' || mode === 'calendar') {
     return referenceDate.toLocaleDateString('en-US', {
       month: 'long',
       year: 'numeric',
@@ -138,7 +140,7 @@ export function getPeriodTitle(mode, referenceDate = new Date()) {
 export function groupTraces(traces, mode, referenceDate = new Date()) {
   const sorted = sortTracesByEncounter(traces)
 
-  if (mode === 'month') {
+  if (mode === 'month' || mode === 'calendar') {
     const inPeriod = sorted.filter((trace) => isInMonth(trace, referenceDate))
     const byDay = new Map()
 
@@ -198,4 +200,37 @@ export function formatEncounterDate(date) {
     day: 'numeric',
     year: 'numeric',
   })
+}
+
+/**
+ * Step the timeline one period back (-1) or forward (+1).
+ * @param {TimelineMode} mode
+ * @param {Date} referenceDate
+ * @param {-1 | 1} direction
+ */
+export function shiftPeriod(mode, referenceDate, direction) {
+  const next = new Date(referenceDate)
+  if (mode === 'week') {
+    next.setDate(next.getDate() + 7 * direction)
+  } else if (mode === 'year') {
+    next.setFullYear(next.getFullYear() + direction, 0, 1)
+  } else {
+    next.setMonth(next.getMonth() + direction, 1)
+  }
+  return next
+}
+
+/**
+ * "September 3, 2026" for a moment; "Sep 3 – Sep 20 · Finished" for a span.
+ * @param {Trace} trace
+ */
+export function formatTraceDates(trace) {
+  if (!trace.span) return formatEncounterDate(trace.occurredAt)
+
+  const short = (/** @type {Date} */ date) =>
+    date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  const { status, endedAt } = trace.span
+  const range = endedAt ? `${short(trace.occurredAt)} – ${short(endedAt)}` : `Since ${short(trace.occurredAt)}`
+
+  return `${range} · ${SPAN_STATUS_LABELS[status]}`
 }

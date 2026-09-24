@@ -1,0 +1,46 @@
+.trace-form__title-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.trace-form__cover {
+  flex-shrink: 0;
+  width: 40px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 1px 2px 6px rgba(63, 61, 137, 0.18);
+}
+
+.trace-form__subtitle {
+  margin-top: -4px;
+  font-size: 0.76rem;
+  color: var(--primary-light);
+}
+
+.trace-form__choices {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.trace-form__choice {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(63, 61, 137, 0.22);
+  font-size: 0.82rem;
+  color: var(--primary-light);
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.trace-form__choice.active {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: rgba(63, 61, 137, 0.06);
+}
+
+.trace-form__error {
+  font-size: 0.76rem;
+  color: #a2475a;
+}

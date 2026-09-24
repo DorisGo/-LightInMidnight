@@ -2,14 +2,21 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTraces } from '../context/TraceContext'
 import BottomNavigation from '../components/home/BottomNavigation'
+import TracePreview from '../components/home/TracePreview'
 import TimelineHeader from '../components/timeline/TimelineHeader'
 import TimelineSwitcher from '../components/timeline/TimelineSwitcher'
 import TimelineGroup from '../components/timeline/TimelineGroup'
-import { getPeriodTitle, groupTraces } from '../lib/timeline'
+import CalendarMonth from '../components/timeline/CalendarMonth'
+import { getPeriodTitle, groupTraces, shiftPeriod } from '../lib/timeline'
+import { tracesOnDay } from '../lib/calendar'
 import { getTimelineFocusForTrace } from '../lib/tracePreview'
+import { toDateInputValue } from '../models/trace'
 import './TimelinePage.css'
 
-/** @typedef {'week' | 'month' | 'year'} TimelineMode */
+/**
+ * @typedef {import('../lib/timeline').TimelineMode} TimelineMode
+ * @typedef {import('../models/trace').Trace} Trace
+ */
 
 export default function TimelinePage() {
   const { traces } = useTraces()
@@ -18,8 +25,19 @@ export default function TimelinePage() {
   const focusTrace = focusId ? traces.find((trace) => trace.id === focusId) : null
   const focus = focusTrace ? getTimelineFocusForTrace(focusTrace) : null
 
-  const [mode, setMode] = useState(/** @type {TimelineMode} */ (focus?.mode ?? 'month'))
-  const referenceDate = focus?.referenceDate ?? new Date()
+  const [mode, setMode] = useState(/** @type {TimelineMode} */ (focus?.mode ?? 'calendar'))
+  const [referenceDate, setReferenceDate] = useState(() => focus?.referenceDate ?? new Date())
+  const [selectedDay, setSelectedDay] = useState(() => new Date())
+  const [previewTrace, setPreviewTrace] = useState(/** @type {Trace|null} */ (null))
+
+  // Arriving from a trace's "Timeline" link while already on this page.
+  useEffect(() => {
+    if (!focus) return
+    setMode(focus.mode)
+    setReferenceDate(focus.referenceDate)
+    setPreviewTrace(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusId])
 
   const periodTitle = useMemo(
     () => getPeriodTitle(mode, referenceDate),
@@ -30,6 +48,19 @@ export default function TimelinePage() {
     [traces, mode, referenceDate],
   )
   const hasVisibleGroups = groups.some((group) => group.traces.length > 0)
+
+  const selectedKey = toDateInputValue(selectedDay)
+  const selectedDayLabel = selectedDay.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+  const dayTraces = useMemo(
+    () => tracesOnDay(traces, selectedDay),
+    [traces, selectedDay],
+  )
+
+  const step = (/** @type {-1 | 1} */ direction) => {
+    const next = shiftPeriod(mode, referenceDate, direction)
+    setReferenceDate(next)
+    if (mode === 'calendar') setSelectedDay(next)
+  }
 
   useEffect(() => {
     if (!focusId) return
@@ -46,11 +77,36 @@ export default function TimelinePage() {
 
   return (
     <div className="timeline-page">
-      <TimelineHeader periodTitle={periodTitle} />
+      <TimelineHeader
+        periodTitle={periodTitle}
+        onPrev={() => step(-1)}
+        onNext={() => step(1)}
+      />
       <TimelineSwitcher mode={mode} onModeChange={setMode} />
 
       <div className="timeline-page__content">
-        {traces.length === 0 ? (
+        {mode === 'calendar' ? (
+          <>
+            <CalendarMonth
+              traces={traces}
+              referenceDate={referenceDate}
+              selectedKey={selectedKey}
+              onSelectDay={setSelectedDay}
+              onSelectTrace={setPreviewTrace}
+            />
+            <div className="timeline-day">
+              {dayTraces.length > 0 ? (
+                <TimelineGroup
+                  label={selectedDayLabel}
+                  traces={dayTraces}
+                  onSelect={setPreviewTrace}
+                />
+              ) : (
+                <p className="timeline-day__empty">{selectedDayLabel} · A quiet day.</p>
+              )}
+            </div>
+          </>
+        ) : traces.length === 0 ? (
           <div className="timeline-empty">
             <p className="timeline-empty__title">No traces yet.</p>
             <p className="timeline-empty__hint">Leave your first trace.</p>
@@ -67,10 +123,15 @@ export default function TimelinePage() {
               label={group.label}
               traces={group.traces}
               highlightId={focusId}
+              onSelect={setPreviewTrace}
             />
           ))
         )}
       </div>
+
+      {previewTrace && (
+        <TracePreview trace={previewTrace} onClose={() => setPreviewTrace(null)} />
+      )}
 
       <BottomNavigation />
     </div>

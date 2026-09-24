@@ -31,3 +31,13 @@
   font-size: 0.9rem;
   color: var(--primary-light);
 }
+
+.timeline-day {
+  margin-top: 20px;
+}
+
+.timeline-day__empty {
+  padding: 0 24px;
+  font-size: 0.9rem;
+  color: var(--primary-light);
+}

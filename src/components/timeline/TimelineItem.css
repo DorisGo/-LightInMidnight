@@ -11,6 +11,15 @@
   color: var(--primary);
 }
 
+.timeline-item__icon--cover {
+  width: 32px;
+  padding-top: 0;
+}
+
+.timeline-item--clickable {
+  cursor: pointer;
+}
+
 .timeline-item__title {
   font-size: 1rem;
   font-weight: 500;

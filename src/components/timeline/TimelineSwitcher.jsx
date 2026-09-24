@@ -1,8 +1,9 @@
 import './TimelineSwitcher.css'
 
-/** @typedef {'week' | 'month' | 'year'} TimelineMode */
+/** @typedef {import('../../lib/timeline').TimelineMode} TimelineMode */
 
 const MODES = [
+  { value: 'calendar', label: 'Calendar' },
   { value: 'week', label: 'Week' },
   { value: 'month', label: 'Month' },
   { value: 'year', label: 'Year' },
