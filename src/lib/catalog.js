@@ -15,6 +15,7 @@
  * @property {string} cover
  * @property {string} url
  * @property {string} kind  NeoDB category, e.g. 'movie' or 'tv'
+ * @property {TraceCategory} category  what it becomes as a trace
  */
 
 const API = 'https://neodb.social/api/catalog/search'
@@ -24,6 +25,14 @@ const NEODB_CATEGORIES = {
   book: ['book'],
   movie: ['movie', 'tv'],
   music: ['music'],
+}
+
+/** @type {Record<string, TraceCategory>} */
+const KIND_TO_CATEGORY = {
+  book: 'book',
+  movie: 'movie',
+  tv: 'movie',
+  music: 'music',
 }
 
 const CJK = /[㐀-鿿]/
@@ -84,17 +93,44 @@ export async function searchCatalog(query, category, signal) {
     for (const page of pages) if (page[i]) merged.push(page[i])
   }
 
-  return merged
+  return toCatalogItems(merged, trimmed).slice(0, 8)
+}
+
+/**
+ * @param {Record<string, any>[]} raw
+ * @param {string} query
+ * @returns {CatalogItem[]}
+ */
+function toCatalogItems(raw, query) {
+  return raw
     // Seasons are titled just "Season 1"; the show itself reads better.
     .filter((item) => item.type !== 'TVSeason')
+    .filter((item) => KIND_TO_CATEGORY[item.category])
     .filter((item) => item.cover_image_url && !item.cover_image_url.includes('default'))
-    .slice(0, 8)
     .map((item) => ({
       id: item.uuid,
-      title: pickTitle(item, trimmed),
+      title: pickTitle(item, query),
       subtitle: pickSubtitle(item),
       cover: item.cover_image_url,
       url: item.id,
       kind: item.category,
+      category: KIND_TO_CATEGORY[item.category],
     }))
+}
+
+/**
+ * Search books, films, series and music at once, so the person never has to pick a category first.
+ * @param {string} query
+ * @param {AbortSignal} [signal]
+ * @returns {Promise<CatalogItem[]>}
+ */
+export async function searchEverything(query, signal) {
+  const trimmed = query.trim()
+  if (!trimmed) return []
+
+  const params = new URLSearchParams({ query: trimmed, page: '1' })
+  const res = await fetch(`${API}?${params}`, { signal })
+  if (!res.ok) return []
+  const json = await res.json()
+  return toCatalogItems(Array.isArray(json.data) ? json.data : [], trimmed).slice(0, 6)
 }

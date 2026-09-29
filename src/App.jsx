@@ -5,12 +5,14 @@ import TimelinePage from './pages/TimelinePage'
 import EditTracePage from './pages/EditTracePage'
 import SettingsPage from './pages/SettingsPage'
 import ThemeLabPage from './lab/ThemeLabPage'
+import QuickAddLab from './lab/QuickAddLab'
 
 export default function App() {
   const location = useLocation()
 
   // The design lab needs the full window, outside the phone-width shell.
   if (location.pathname === '/lab') return <ThemeLabPage />
+  if (location.pathname === '/lab/add') return <QuickAddLab />
 
   return (
     <div className="app-shell">
