@@ -1,0 +1,53 @@
+.clock-home {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 44px 0 24px;
+}
+
+.clock-home__header {
+  padding: 0 28px;
+  text-align: center;
+}
+
+.clock-home__date {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--primary-light);
+}
+
+.clock-home__stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.clock-home__hint {
+  margin-top: 4px;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--accent);
+  animation: clock-hint 3.2s ease-in-out infinite;
+}
+
+@keyframes clock-hint {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.clock-home__companions {
+  padding-top: 12px;
+}
+
+.clock-home__companions-label {
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary-light);
+}

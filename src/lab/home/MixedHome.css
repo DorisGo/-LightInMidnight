@@ -1,0 +1,126 @@
+.mix-home {
+  --px: 0;
+  --py: 0;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 44px;
+  overflow: hidden;
+}
+
+/* ── depth: dust drifts least, the dial a little, the covers most ── */
+
+.mix-home__dust,
+.mix-home__dial,
+.mix-home__covers {
+  transition: transform 0.7s ease-out;
+}
+
+.mix-home__dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translate(calc(var(--px) * -4px), calc(var(--py) * -4px));
+}
+
+.mix-home__dust span {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--home-star);
+  opacity: 0.18;
+  animation: dust-twinkle 8s ease-in-out infinite;
+}
+
+.home-frame[data-mode='paper'] .mix-home__dust span {
+  opacity: 0.12;
+  animation: none;
+}
+
+@keyframes dust-twinkle {
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.32; }
+}
+
+.mix-home__header {
+  position: relative;
+  text-align: center;
+}
+
+.mix-home__date {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--primary-light);
+}
+
+.mix-home__dial {
+  position: relative;
+  width: 88%;
+  max-width: 330px;
+  margin: 4px auto 0;
+  transform: translate(calc(var(--px) * -7px), calc(var(--py) * -7px));
+}
+
+.mix-home__hint {
+  margin-top: 2px;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--accent);
+  animation: mix-hint 3.2s ease-in-out infinite;
+}
+
+@keyframes mix-hint {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* ── what keeps you company ── */
+
+.mix-home__drift {
+  position: relative;
+  flex: 1;
+  min-height: 200px;
+  margin-top: 20px;
+}
+
+.mix-home__drift-label {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  opacity: 0.8;
+}
+
+.mix-home__covers {
+  position: absolute;
+  inset: 0;
+  transform: translate(calc(var(--px) * 16px), calc(var(--py) * 16px));
+}
+
+.mix-home__covers .trace-thumb--cover {
+  box-shadow:
+    0 2px 4px color-mix(in srgb, var(--sky-deep) 20%, transparent),
+    0 14px 28px color-mix(in srgb, var(--sky-deep) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mix-home__dust span,
+  .mix-home__hint {
+    animation: none;
+  }
+
+  .mix-home__dust,
+  .mix-home__dial,
+  .mix-home__covers {
+    transform: none;
+  }
+}

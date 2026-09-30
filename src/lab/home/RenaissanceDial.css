@@ -1,0 +1,163 @@
+/*
+ * Gilt at night, engraved ink by day. --gold is the metal of the dial;
+ * the days and stars keep the sky's own colour.
+ */
+.ren-dial {
+  --gold: color-mix(in srgb, var(--accent) 78%, var(--home-star, var(--ink)));
+  --gold-soft: color-mix(in srgb, var(--gold) 45%, transparent);
+  --cartouche: var(--sky-deep);
+}
+
+[data-mode='paper'] .ren-dial {
+  --gold: color-mix(in srgb, var(--ink) 72%, var(--accent));
+  --cartouche: var(--bg);
+}
+
+.ren-dial__day {
+  fill: none;
+  stroke: var(--home-star, var(--ink));
+  stroke-opacity: 0.12;
+  stroke-width: 0.5;
+  stroke-dasharray: 0.6 2.4;
+  stroke-linecap: round;
+}
+
+.ren-dial__day--today {
+  stroke: var(--gold);
+  stroke-opacity: 0.45;
+  stroke-dasharray: none;
+}
+
+.ren-dial__border {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.9;
+  stroke-opacity: 0.75;
+}
+
+.ren-dial__border--thin {
+  stroke-width: 0.4;
+  stroke-opacity: 0.5;
+}
+
+.ren-dial__stud {
+  fill: var(--gold);
+  opacity: 0.7;
+}
+
+.ren-dial__cartouche {
+  fill: var(--cartouche);
+  stroke: var(--gold);
+  stroke-width: 0.6;
+}
+
+.ren-dial__moon,
+.ren-dial__star4 {
+  fill: var(--gold);
+}
+
+.ren-dial__sun circle {
+  fill: var(--gold);
+}
+
+.ren-dial__sun line {
+  stroke: var(--gold);
+  stroke-width: 0.7;
+  stroke-linecap: round;
+}
+
+.ren-dial__bead {
+  fill: var(--gold);
+  opacity: 0.8;
+}
+
+.ren-dial__chapter {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.7;
+  stroke-opacity: 0.8;
+}
+
+.ren-dial__chapter--thin {
+  stroke-width: 0.35;
+}
+
+.ren-dial__track {
+  stroke: var(--gold);
+  stroke-width: 0.35;
+  stroke-opacity: 0.6;
+}
+
+.ren-dial__track--hour {
+  stroke-width: 0.8;
+  stroke-opacity: 1;
+}
+
+.ren-dial__numeral {
+  fill: var(--gold);
+  font-family: 'Cinzel', var(--serif);
+  font-size: 7.4px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ren-dial__numeral--quarter {
+  font-size: 8.6px;
+  font-weight: 600;
+}
+
+.ren-dial__rosette ellipse,
+.ren-dial__rosette circle {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.35;
+  stroke-opacity: 0.22;
+}
+
+/* ── the hand ── */
+
+.ren-dial__hand line {
+  stroke: var(--gold);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+}
+
+.ren-dial__hand polygon {
+  fill: var(--gold);
+}
+
+.ren-dial__hand-tip {
+  opacity: 0.9;
+}
+
+.ren-dial__hand-glow {
+  fill: var(--accent);
+  opacity: calc(0.7 * var(--home-glow, 0) + 0.15);
+}
+
+.ren-dial__hand-pin {
+  fill: var(--cartouche);
+}
+
+/* ── the hours, in the middle ── */
+
+.ren-dial__time {
+  width: 27%;
+}
+
+.ren-dial__time .clock-home__time-digits {
+  font-size: 8.4cqw;
+  letter-spacing: 0.02em;
+}
+
+.ren-dial__hora {
+  font-family: 'Cinzel', var(--serif);
+  font-size: 2.1cqw;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1px;
+  padding-left: 0.32em;
+}
