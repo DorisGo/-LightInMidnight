@@ -5,3 +5,26 @@
   position: relative;
   overflow: hidden;
 }
+
+.home-page__sky {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  color: var(--ink);
+  transition: background 0.4s, color 0.4s;
+}
+
+.home-page__sky[data-mode='night'] {
+  background: radial-gradient(ellipse at 50% 35%, var(--sky) 0%, var(--sky-deep) 75%);
+}
+
+/* What the home designs read for stars: ink on paper, glowing starlight at night. */
+.home-frame {
+  --home-star: var(--ink);
+  --home-glow: 0;
+}
+
+.home-frame[data-mode='night'] {
+  --home-star: var(--star);
+  --home-glow: 1;
+}
