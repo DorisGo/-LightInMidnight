@@ -16,6 +16,9 @@ export function AppearanceProvider({ children }) {
     root.dataset.palette = appearance.palette
     root.dataset.mode = appearance.mode
     root.dataset.sky = appearance.sky
+    // Keep the browser / home-screen status bar in step with the theme.
+    const bg = getComputedStyle(root).getPropertyValue('--bg').trim()
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bg)
   }, [appearance])
 
   const setAppearance = useCallback((/** @type {Partial<Appearance>} */ patch) => {
