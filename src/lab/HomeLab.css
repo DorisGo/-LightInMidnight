@@ -83,16 +83,6 @@
 }
 
 /* Stars are ink on paper and light at night. */
-.home-frame {
-  --home-star: var(--ink);
-  --home-glow: 0;
-}
-
-.home-frame[data-mode='night'] {
-  --home-star: var(--star);
-  --home-glow: 1;
-}
-
 .home-lab__phone {
   position: relative;
   height: 740px;

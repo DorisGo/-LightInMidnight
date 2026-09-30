@@ -100,19 +100,21 @@ export default function MixedHome({ traces, companions, marked, now, landingId, 
         {showHint && <p className="mix-home__hint">tap the time to leave a trace</p>}
       </div>
 
-      <section className="mix-home__drift" aria-label="Still with you">
-        <p className="mix-home__drift-label">still with you</p>
-        <div className="mix-home__covers">
-          <Companions
-            traces={companions}
-            marked={marked}
-            onToggle={onToggle}
-            layout="scatter"
-            positions={COVER_SPOTS}
-            width={60}
-          />
-        </div>
-      </section>
+      {companions.length > 0 && (
+        <section className="mix-home__drift" aria-label="Still with you">
+          <p className="mix-home__drift-label">still with you</p>
+          <div className="mix-home__covers">
+            <Companions
+              traces={companions}
+              marked={marked}
+              onToggle={onToggle}
+              layout="scatter"
+              positions={COVER_SPOTS}
+              width={60}
+            />
+          </div>
+        </section>
+      )}
     </div>
   )
 }
