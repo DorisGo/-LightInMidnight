@@ -87,6 +87,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
   const today = toDateInputValue(new Date())
   const inputRef = useRef(/** @type {HTMLInputElement|null} */ (null))
   const visualRef = useRef(/** @type {HTMLElement|null} */ (null))
+  const saveRef = useRef(/** @type {HTMLButtonElement|null} */ (null))
 
   const [query, setQuery] = useState('')
   const [results, setResults] = useState(/** @type {CatalogItem[]} */ ([]))
@@ -108,6 +109,11 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
+
+  // The input leaves once something is chosen; hand focus to Save so Enter still works.
+  useEffect(() => {
+    if (chosen) saveRef.current?.focus({ preventScroll: true })
+  }, [chosen])
 
   useEffect(() => {
     if (chosen || !query.trim()) {
@@ -376,7 +382,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
               />
             )}
 
-            <button type="button" className="quick-add__save" onClick={save}>
+            <button type="button" className="quick-add__save" onClick={save} ref={saveRef}>
               Leave a trace
             </button>
           </>

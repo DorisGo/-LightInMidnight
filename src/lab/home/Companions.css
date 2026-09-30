@@ -1,0 +1,65 @@
+.companions--row {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+}
+
+.companions--scatter {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.companion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 72px;
+  color: var(--primary-light);
+  pointer-events: auto;
+}
+
+.companions--scatter .companion {
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(var(--tilt, 0deg));
+}
+
+.companion__float {
+  display: block;
+  animation: companion-float var(--float-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+.companion .trace-thumb {
+  transition: box-shadow 0.3s;
+}
+
+.companion--marked .trace-thumb {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--accent), 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.companion__label {
+  max-width: 100%;
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.companion--marked .companion__label {
+  color: var(--accent);
+}
+
+@keyframes companion-float {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-6px) rotate(1.5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion__float {
+    animation: none;
+  }
+}
