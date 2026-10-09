@@ -1,3 +1,4 @@
+import CoverImage from './CoverImage'
 import { useState } from 'react'
 import MarkShape from '../MarkShape'
 import { useShapePreferences } from '../../context/ShapePreferenceContext'
@@ -14,7 +15,7 @@ export default function TraceThumb({ trace, width = 34, className = '' }) {
 
   if (trace.cover && !broken) {
     return (
-      <img
+      <CoverImage
         className={`trace-thumb trace-thumb--cover ${className}`}
         src={trace.cover}
         alt=""

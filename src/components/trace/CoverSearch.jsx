@@ -55,7 +55,7 @@ export default function CoverSearch({ query, category, hidden, onPick }) {
         <p className="cover-search__hint">Looking…</p>
       )}
       {state === 'error' && (
-        <p className="cover-search__hint">Couldn't reach the catalog. You can still save it by name.</p>
+        <p className="cover-search__hint">Couldn't reach the catalog. You can add your own image and save it by name.</p>
       )}
       {state === 'done' && results.length === 0 && (
         <p className="cover-search__hint">Nothing found. It can still be a trace.</p>

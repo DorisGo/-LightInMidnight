@@ -1,3 +1,5 @@
+import ImageUpload from '../trace/ImageUpload'
+import CoverImage from '../trace/CoverImage'
 import { useEffect, useRef, useState } from 'react'
 import CategoryIcon from '../CategoryIcon'
 import TraceThumb from '../trace/TraceThumb'
@@ -103,6 +105,10 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
   const [openChip, setOpenChip] = useState(/** @type {ChipName|null} */ (null))
   const [closing, setClosing] = useState(false)
 
+  const [localCover, setLocalCover] = useState(null)
+  const [imageBusy, setImageBusy] = useState(false)
+  const [searchError, setSearchError] = useState(false)
+
   const chosen = Boolean(picked) || asWords
   const title = picked?.title ?? query.trim()
 
@@ -123,11 +129,12 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
     }
     const controller = new AbortController()
     setSearching(true)
+    setSearchError(false)
     const timer = window.setTimeout(async () => {
       try {
         setResults(await searchEverything(query, controller.signal))
       } catch (err) {
-        if (err.name !== 'AbortError') setResults([])
+        if (err.name !== 'AbortError') { setResults([]); setSearchError(true) }
       } finally {
         if (!controller.signal.aborted) setSearching(false)
       }
@@ -170,7 +177,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
   }
 
   const save = () => {
-    if (!title) return
+    if (!title || imageBusy) return
     const occurredAt = fromDateInputValue(dateKey)
     const endedAt = fromDateInputValue(today)
     onSave(
@@ -186,6 +193,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
               source: { provider: 'neodb', id: picked.id, url: picked.url },
             }
           : {}),
+        ...(localCover ? { cover: localCover } : {}),
         ...(lasting
           ? { span: { status, endedAt: status === 'ongoing' ? null : endedAt < occurredAt ? occurredAt : endedAt } }
           : {}),
@@ -230,8 +238,8 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
         ) : (
           <div className="quick-add__chosen">
             <div className="quick-add__visual" ref={(el) => { visualRef.current = el }}>
-              {picked ? (
-                <img src={picked.cover} alt="" />
+              {localCover || picked ? (
+                <CoverImage src={localCover || picked.cover} alt="" />
               ) : (
                 <span className="quick-add__words-card">
                   <CategoryIcon type={category} />
@@ -247,6 +255,8 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
             </div>
           </div>
         )}
+
+        <ImageUpload cover={localCover} onChange={setLocalCover} onBusy={setImageBusy} />
 
         {!chosen && !query.trim() && ongoing.length > 0 && (
           <section className="quick-add__ongoing">
@@ -275,7 +285,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
           <div className="quick-add__results">
             {results.map((item) => (
               <button key={item.id} type="button" className="quick-add__result" onClick={() => pick(item)}>
-                <img src={item.cover} alt="" loading="lazy" />
+                <CoverImage src={item.cover} alt="" loading="lazy" />
                 <span className="quick-add__result-text">
                   <span className="quick-add__result-title">{item.title}</span>
                   {item.subtitle && <span className="quick-add__result-subtitle">{item.subtitle}</span>}
@@ -283,6 +293,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
                 <span className="quick-add__result-kind">{CATEGORY_LABELS[item.category]}</span>
               </button>
             ))}
+            {searchError && <p className="quick-add__hint">Could not reach the catalog. You can add your own image and save your words.</p>}
             {searching && results.length === 0 && <p className="quick-add__hint">Looking…</p>}
             <button type="button" className="quick-add__as-words" onClick={keepAsWords}>
               <span className="quick-add__as-words-quote">“{query.trim()}”</span>
@@ -382,7 +393,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
               />
             )}
 
-            <button type="button" className="quick-add__save" onClick={save} ref={saveRef}>
+            <button type="button" className="quick-add__save" onClick={save} disabled={imageBusy} ref={saveRef}>
               Leave a trace
             </button>
           </>

@@ -1,3 +1,6 @@
+import ImageUpload from './ImageUpload'
+import { isLocalImage } from '../../lib/localImages'
+import CoverImage from './CoverImage'
 import { useState } from 'react'
 import CategoryIcon from '../CategoryIcon'
 import CoverSearch from './CoverSearch'
@@ -57,13 +60,15 @@ export default function TraceForm({ heading, initial, onBack, onSubmit, classNam
   )
   const [note, setNote] = useState(initial?.note ?? '')
 
+  const [imageBusy, setImageBusy] = useState(false)
+
   const needsEnd = lasting && status !== 'ongoing'
   const endBeforeStart = needsEnd && endValue < startValue
-  const canSave = memory.trim().length > 0 && !endBeforeStart
+  const canSave = memory.trim().length > 0 && !endBeforeStart && !imageBusy
 
   const handleCategory = (/** @type {TraceCategory} */ next) => {
     setCategory(next)
-    if (next !== category) setPicked(null)
+    if (next !== category && !isLocalImage(picked?.cover)) setPicked(null)
     if (!spanChosen) setLasting(SPAN_CATEGORIES.includes(next))
   }
 
@@ -84,7 +89,7 @@ export default function TraceForm({ heading, initial, onBack, onSubmit, classNam
 
   const handleMemory = (/** @type {string} */ value) => {
     setMemory(value)
-    if (picked && value !== picked.title) setPicked(null)
+    if (picked && !isLocalImage(picked.cover) && value !== picked.title) setPicked(null)
   }
 
   const handleSubmit = (/** @type {import('react').FormEvent} */ e) => {
@@ -139,7 +144,7 @@ export default function TraceForm({ heading, initial, onBack, onSubmit, classNam
         </label>
         <div className="trace-form__title-row">
           {picked && (
-            <img className="trace-form__cover" src={picked.cover} alt="" />
+            <CoverImage className="trace-form__cover" src={picked.cover} alt="" />
           )}
           <input
             id="trace-memory"
@@ -153,6 +158,7 @@ export default function TraceForm({ heading, initial, onBack, onSubmit, classNam
           />
         </div>
         {picked?.subtitle && <p className="trace-form__subtitle">{picked.subtitle}</p>}
+        <ImageUpload cover={picked?.cover} onBusy={setImageBusy} onChange={(cover) => setPicked(cover ? { title: memory, cover, subtitle: '' } : null)} />
         <CoverSearch
           query={memory}
           category={category}

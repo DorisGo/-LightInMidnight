@@ -1,0 +1,6 @@
+.image-upload { margin: 12px 0; font-size: 13px; }
+.image-upload__button, .image-upload button { display: inline-block; padding: 8px 12px; border: 1px solid currentColor; border-radius: 8px; background: transparent; color: inherit; cursor: pointer; margin-right: 8px; font: inherit; }
+.image-upload__button { position: relative; }
+.image-upload__button:focus-within { outline: 2px solid currentColor; outline-offset: 3px; }
+.image-upload input { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
+.image-upload p { margin: 6px 0; opacity: .75; }

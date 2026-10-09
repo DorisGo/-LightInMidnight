@@ -1,3 +1,4 @@
+import CoverImage from '../trace/CoverImage'
 import { useState } from 'react'
 import MarkShape from '../MarkShape'
 import { useShapePreferences } from '../../context/ShapePreferenceContext'
@@ -34,7 +35,7 @@ function AlbumTile({ entry, onSelect }) {
       aria-label={trace.memory}
     >
       {hasCover ? (
-        <img src={trace.cover} alt="" loading="lazy" onError={() => setBroken(true)} />
+        <CoverImage src={trace.cover} alt="" loading="lazy" onError={() => setBroken(true)} />
       ) : (
         <span className="album-tile__note">
           <MarkShape type={getMarkForTrace(trace)} size={18} />
