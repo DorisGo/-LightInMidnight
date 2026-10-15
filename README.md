@@ -11,29 +11,35 @@ Light In Midnight 记录你与书、电影、音乐、地点和日常的每一�
 
 ## Screenshots
 
+当前上线版本的手机尺寸截图，使用项目自带的示例记录展示。
+
 <table>
 <tr>
 <td align="center">
-<img src="https://github.com/user-attachments/assets/dc6204f9-0042-4206-9318-520e8ef102fa" width="260"/><br/>
-主页
+<img src="docs/screenshots/home.png" alt="Light In Midnight · 钟盘首页" width="260"/><br/>
+钟盘首页
 </td>
 <td align="center">
-<img src="https://github.com/user-attachments/assets/bbef52a7-114e-4216-bf48-cdac504ffa6b" width="260"/><br/>
-Timeline
+<img src="docs/screenshots/add-trace.png" alt="Light In Midnight · 快速记录与图片上传" width="260"/><br/>
+快速记录与图片上传
 </td>
 <td align="center">
-<img src="https://github.com/user-attachments/assets/7b2e7e3f-6758-4652-a1dc-36893c540df0" width="260"/><br/>
-设置
+<img src="docs/screenshots/calendar.png" alt="Light In Midnight · 月历回看" width="260"/><br/>
+月历回看
 </td>
 </tr>
 <tr>
 <td align="center">
-<img src="https://github.com/user-attachments/assets/3dce6275-2401-4b9b-9bed-eb36863b5674" width="260"/><br/>
-Trace Detail
+<img src="docs/screenshots/week.png" alt="Light In Midnight · 周相册" width="260"/><br/>
+周相册
 </td>
 <td align="center">
-<img src="https://github.com/user-attachments/assets/9b394f8d-9f39-474a-a72d-00bccbc1eaf0" width="260"/><br/>
-Trace Detail
+<img src="docs/screenshots/year.png" alt="Light In Midnight · 年度星图" width="260"/><br/>
+年度星图
+</td>
+<td align="center">
+<img src="docs/screenshots/settings.png" alt="Light In Midnight · 外观设置" width="260"/><br/>
+外观设置
 </td>
 </tr>
 </table>
@@ -67,8 +73,11 @@ In Paper, the year can glow like a night sky or be printed like an old ink star 
 ### 🎨 Shape Preferences
 Choose how each kind of trace appears on the canvas.
 
+### 🖼 Your own images, even offline
+Add an image from your device when a cover is missing or the network is unavailable. Uploaded images are stored locally in IndexedDB and remain available after reopening the app.
+
 ### 💾 Yours, on your device
-Traces are saved in your browser (LocalStorage). No account, no feed, no followers.
+Trace details are saved in your browser (LocalStorage), and uploaded images in IndexedDB. The PWA caches the app for offline use after an initial online visit. No account, no feed, no followers.
 
 ---
 
@@ -124,7 +133,8 @@ Two design playgrounds live alongside the app:
 | Routing | React Router |
 | State | Context API |
 | Styling | Plain CSS with theme tokens |
-| Data | LocalStorage |
+| Data | LocalStorage (records) + IndexedDB (uploaded images) |
+| Offline | PWA / Service Worker |
 | Catalog & covers | [NeoDB](https://neodb.social) public API |
 
 ---
@@ -152,7 +162,6 @@ docs                 # product vision and philosophy
 
 ## Future
 
-- Bring the input-first add flow into the app
 - A home canvas that grows with every trace
 - Month as a wall of covers
 - Cloud sync
