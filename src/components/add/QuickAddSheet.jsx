@@ -1,3 +1,4 @@
+import { useOnlineStatus } from '../../lib/useOnlineStatus'
 import ImageUpload from '../trace/ImageUpload'
 import CoverImage from '../trace/CoverImage'
 import { useEffect, useRef, useState } from 'react'
@@ -86,6 +87,7 @@ function Chip({ label, open, onClick }) {
  * }} props
  */
 export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), onSession, onSave, onClose }) {
+  const online = useOnlineStatus()
   const today = toDateInputValue(new Date())
   const inputRef = useRef(/** @type {HTMLInputElement|null} */ (null))
   const visualRef = useRef(/** @type {HTMLElement|null} */ (null))
@@ -122,7 +124,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
   }, [chosen])
 
   useEffect(() => {
-    if (chosen || !query.trim()) {
+    if (chosen || !query.trim() || !online) {
       setResults([])
       setSearching(false)
       return
@@ -143,7 +145,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
       window.clearTimeout(timer)
       controller.abort()
     }
-  }, [query, chosen])
+  }, [query, chosen, online])
 
   const applyCategory = (/** @type {TraceCategory} */ next) => {
     setCategory(next)
@@ -256,6 +258,7 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
           </div>
         )}
 
+        {!online && <p className="quick-add__hint" role="status">You’re offline. Add a photo from this device and save without searching.</p>}
         <ImageUpload cover={localCover} onChange={setLocalCover} onBusy={setImageBusy} />
 
         {!chosen && !query.trim() && ongoing.length > 0 && (
@@ -300,6 +303,12 @@ export default function QuickAddSheet({ ongoing = [], sessionKeys = new Set(), o
               <span>just as it is</span>
             </button>
           </div>
+        )}
+
+        {!chosen && localCover && (
+          <button type="button" className="quick-add__save" disabled={!query.trim() || imageBusy} onClick={save}>
+            Leave a trace
+          </button>
         )}
 
         {chosen && (

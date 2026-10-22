@@ -22,5 +22,6 @@ export default function CoverImage({ src, onError, ...props }) {
     }
   }, [src])
   const url = isLocalImage(src) ? (resolved?.source === src ? resolved.url : undefined) : src
+  if (!url) return null
   return <img {...props} src={url} onError={onError} />
 }

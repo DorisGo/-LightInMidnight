@@ -1,3 +1,4 @@
+import { useOnlineStatus } from '../../lib/useOnlineStatus'
 import { useEffect, useState } from 'react'
 import { searchCatalog, isSearchable } from '../../lib/catalog'
 import './CoverSearch.css'
@@ -20,7 +21,8 @@ export default function CoverSearch({ query, category, hidden, onPick }) {
   const [results, setResults] = useState(/** @type {CatalogItem[]} */ ([]))
   const [state, setState] = useState(/** @type {'idle'|'loading'|'done'|'error'} */ ('idle'))
 
-  const active = !hidden && isSearchable(category) && query.trim().length > 0
+  const online = useOnlineStatus()
+  const active = online && !hidden && isSearchable(category) && query.trim().length > 0
 
   useEffect(() => {
     if (!active) {

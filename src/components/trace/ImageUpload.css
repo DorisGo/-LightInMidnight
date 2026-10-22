@@ -4,3 +4,5 @@
 .image-upload__button:focus-within { outline: 2px solid currentColor; outline-offset: 3px; }
 .image-upload input { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
 .image-upload p { margin: 6px 0; opacity: .75; }
+
+.image-upload__preview { display: block; width: 72px; height: 96px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; }

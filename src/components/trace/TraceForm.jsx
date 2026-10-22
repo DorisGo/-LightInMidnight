@@ -158,7 +158,7 @@ export default function TraceForm({ heading, initial, onBack, onSubmit, classNam
           />
         </div>
         {picked?.subtitle && <p className="trace-form__subtitle">{picked.subtitle}</p>}
-        <ImageUpload cover={picked?.cover} onBusy={setImageBusy} onChange={(cover) => setPicked(cover ? { title: memory, cover, subtitle: '' } : null)} />
+        <ImageUpload showPreview={false} cover={picked?.cover} onBusy={setImageBusy} onChange={(cover) => setPicked(cover ? { title: memory, cover, subtitle: '' } : null)} />
         <CoverSearch
           query={memory}
           category={category}

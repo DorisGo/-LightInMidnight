@@ -22,8 +22,8 @@ const MILESTONE_LABELS = {
 function AlbumTile({ entry, onSelect }) {
   const { trace, milestone } = entry
   const { getMarkForTrace } = useShapePreferences()
-  const [broken, setBroken] = useState(false)
-  const hasCover = Boolean(trace.cover) && !broken
+  const [brokenSource, setBrokenSource] = useState(null)
+  const hasCover = Boolean(trace.cover) && brokenSource !== trace.cover
   // Albums are square; books and films stand tall.
   const shape = trace.category === 'music' ? 'square' : 'tall'
 
@@ -35,7 +35,7 @@ function AlbumTile({ entry, onSelect }) {
       aria-label={trace.memory}
     >
       {hasCover ? (
-        <CoverImage src={trace.cover} alt="" loading="lazy" onError={() => setBroken(true)} />
+        <CoverImage src={trace.cover} alt="" loading="lazy" onError={() => setBrokenSource(trace.cover)} />
       ) : (
         <span className="album-tile__note">
           <MarkShape type={getMarkForTrace(trace)} size={18} />

@@ -10,10 +10,10 @@ import './TraceThumb.css'
  */
 export default function TraceThumb({ trace, width = 34, className = '' }) {
   const { getMarkForTrace } = useShapePreferences()
-  const [broken, setBroken] = useState(false)
+  const [brokenSource, setBrokenSource] = useState(null)
   const height = Math.round(width * 1.42)
 
-  if (trace.cover && !broken) {
+  if (trace.cover && brokenSource !== trace.cover) {
     return (
       <CoverImage
         className={`trace-thumb trace-thumb--cover ${className}`}
@@ -22,7 +22,7 @@ export default function TraceThumb({ trace, width = 34, className = '' }) {
         width={width}
         height={height}
         loading="lazy"
-        onError={() => setBroken(true)}
+        onError={() => setBrokenSource(trace.cover)}
       />
     )
   }

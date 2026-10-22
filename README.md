@@ -109,7 +109,7 @@ Because recording makes us feel our existence.
 
 ## Getting Started
 
-Requires Node.js 18 or later.
+Requires Node.js 20 or later.
 
 ```bash
 npm install
@@ -122,6 +122,21 @@ Two design playgrounds live alongside the app:
 
 - `/lab` — compare Paper and Night across every palette
 - `/lab/add` — try the new input-first way of leaving a trace
+
+---
+
+## Offline image checks
+
+The browser tests cover choosing a photo before entering a title, offline saving and reopening, replacing an image, and recovering from a storage failure.
+
+With Google Chrome installed, prepare the WebKit test browser and run:
+
+```bash
+npx playwright install webkit
+npm run test:offline
+```
+
+WebKit checks complement device testing; they do not replace testing the iOS photo picker on a physical device. Photos stored only in iCloud must first be downloaded to the device before they can be selected offline.
 
 ---
 
